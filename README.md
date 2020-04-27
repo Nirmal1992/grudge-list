@@ -1,4 +1,4 @@
-# Grudges (Frontend Masters: React State)
+# Grudges ( React State)
 
 We're starting out with a basic version of an application that uses hooks to manage state.
 
@@ -672,7 +672,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Grudge);
+export default connect(
+  null,
+  mapDispatchToProps
+)(Grudge);
 ```
 
 #### Grudges.js
