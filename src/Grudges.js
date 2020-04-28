@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import Grudge from './Grudge';
-import { GrudgeContext } from './GrudgeContext';
+import { useGrudges } from './GrudgeContext';
 
 const Grudges = () => {
-  const { grudges } = useContext(GrudgeContext);
+  const grudges = useGrudges();
   return (
     <section className="Grudges">
       <h2>Grudges ({grudges.length})</h2>

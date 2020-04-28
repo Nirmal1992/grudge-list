@@ -1,18 +1,14 @@
-import React, {
-  createContext,
-  useReducer,
-  useCallback,
-  useContext
-} from 'react';
+import React, { createContext, useReducer, useCallback } from 'react';
 import id from 'uuid/v4';
 import initialState from './initialState';
 
-export const GrudgeContext = createContext();
+export const GrudgeContextState = createContext();
+export const GrudgeContextDispatch = createContext();
 
-export const GrudeProvider = ({ children }) => {
-  const ADD_GRUDGE = 'ADD_GRUDGE';
-  const TOOGLE_GRUDGE = 'TOOGLE_GRUDGE';
+const ADD_GRUDGE = 'ADD_GRUDGE';
+const TOOGLE_GRUDGE = 'TOOGLE_GRUDGE';
 
+export function GrudeProvider({ children }) {
   const reducer = (state, action) => {
     if (action.type === ADD_GRUDGE) {
       return [action.payload, ...state];
@@ -28,8 +24,20 @@ export const GrudeProvider = ({ children }) => {
 
   const [grudges, dispatch] = useReducer(reducer, initialState);
 
-  const addGrudge = useCallback(
-    ({ person, reason }) => {
+
+  return (
+    <GrudgeContextState.Provider value={grudges}>
+      <GrudgeContextDispatch.Provider value={dispatch}>
+        {children}
+      </GrudgeContextDispatch.Provider>
+    </GrudgeContextState.Provider>
+  );
+}
+
+export function useAddGrudge() {
+  const dispatch = React.useContext(GrudgeContextDispatch);
+  return useCallback(
+    ({ person, reason }) =>
       dispatch({
         type: ADD_GRUDGE,
         payload: {
@@ -38,28 +46,25 @@ export const GrudeProvider = ({ children }) => {
           id: id(),
           forgiven: false
         }
-      });
-    },
+      }),
     [dispatch]
   );
+}
 
-  const toggleForgiveness = useCallback(
-    id => {
-      dispatch({
-        type: TOOGLE_GRUDGE,
-        id
-      });
-    },
-    [dispatch]
-  );
-
-  const values = {
-    addGrudge,
-    toggleForgiveness,
-    grudges
+export function useToggleForgiveness() {
+  const dispatch = React.useContext(GrudgeContextDispatch);
+  return id => {
+    dispatch({
+      type: 'TOOGLE_GRUDGE',
+      id
+    });
   };
+}
 
-  return (
-    <GrudgeContext.Provider value={values}>{children}</GrudgeContext.Provider>
-  );
-};
+export function useGrudges() {
+  const context = React.useContext(GrudgeContextState);
+  if (context === undefined) {
+    throw new Error('empty context');
+  }
+  return context;
+}
