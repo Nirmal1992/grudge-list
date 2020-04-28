@@ -24,6 +24,7 @@ export function GrudeProvider({ children }) {
 
   const [grudges, dispatch] = useReducer(reducer, initialState);
 
+
   return (
     <GrudgeContextState.Provider value={grudges}>
       <GrudgeContextDispatch.Provider value={dispatch}>
