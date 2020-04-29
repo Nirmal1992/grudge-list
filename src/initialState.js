@@ -71,4 +71,8 @@ const initialState = [
   }
 ];
 
-export default initialState;
+export default {
+  past: [],
+  present: initialState,
+  future: []
+};
