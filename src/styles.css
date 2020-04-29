@@ -34,6 +34,12 @@ input[type='submit']:hover {
   background-color: #f65e81;
 }
 
+button:disabled {
+  background-color: #999;
+  border:none;
+  cursor: not-allowed;
+}
+
 button:active,
 .button:active,
 input[type='submit']:active {
